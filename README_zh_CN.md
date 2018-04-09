@@ -25,9 +25,9 @@ soffice -headless -accept="socket,host=127.0.0.1,port=8100;urp;" -nofirststartwi
 1. 运行 DocumentToThumbnail.jar
 
 cd ~/DocumentToThumb 当前目录的位置  </br>
-java -jar DocumentToThumbnail.jar c:/test/test.pptx c:/test 
+java -jar DocumentToThumbnail.jar /data/test/test.pptx /data/test 
  
-运行成功后 c:/test/thumb 可看到缩略图
+运行成功后 /data/test/thumb 可看到缩略图
 
 ## 备注 ##
 在安装的过程里面，出现了问题可以在此留言，baidu google
