@@ -58,7 +58,6 @@ public class DocumentToPDF {
 	private static final Option OPTION_OUTPUT_FORMAT = new Option("f", "output-format", true,
 			"output format (e.g. pdf)");
 	private static final Option OPTION_PORT = new Option("p", "port", true, "OpenOffice.org port");
-	private static final Option OPTION_IP = new Option("i", "ip", true, "192.168.3.104");
 	private static final Option OPTION_VERBOSE = new Option("v", "verbose", false, "verbose");
 	private static final Option OPTION_XML_REGISTRY = new Option("x", "xml-registry", true,
 			"XML document format registry");
@@ -72,7 +71,6 @@ public class DocumentToPDF {
 		Options options = new Options();
 		options.addOption(OPTION_OUTPUT_FORMAT);
 		options.addOption(OPTION_PORT);
-		options.addOption(OPTION_IP);
 		options.addOption(OPTION_VERBOSE);
 		options.addOption(OPTION_XML_REGISTRY);
 		return options;
