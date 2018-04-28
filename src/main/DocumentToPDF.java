@@ -35,7 +35,7 @@ import com.artofsolving.jodconverter.DocumentFormatRegistry;
 import com.artofsolving.jodconverter.XmlDocumentFormatRegistry;
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
-import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
+import com.artofsolving.jodconverter.openoffice.converter.StreamOpenOfficeDocumentConverter;
 
 /**
  * Command line tool to convert a document into a different format.
@@ -58,6 +58,7 @@ public class DocumentToPDF {
 	private static final Option OPTION_OUTPUT_FORMAT = new Option("f", "output-format", true,
 			"output format (e.g. pdf)");
 	private static final Option OPTION_PORT = new Option("p", "port", true, "OpenOffice.org port");
+	private static final Option OPTION_IP = new Option("i", "ip", true, "192.168.3.104");
 	private static final Option OPTION_VERBOSE = new Option("v", "verbose", false, "verbose");
 	private static final Option OPTION_XML_REGISTRY = new Option("x", "xml-registry", true,
 			"XML document format registry");
@@ -71,6 +72,7 @@ public class DocumentToPDF {
 		Options options = new Options();
 		options.addOption(OPTION_OUTPUT_FORMAT);
 		options.addOption(OPTION_PORT);
+		options.addOption(OPTION_IP);
 		options.addOption(OPTION_VERBOSE);
 		options.addOption(OPTION_XML_REGISTRY);
 		return options;
@@ -80,12 +82,15 @@ public class DocumentToPDF {
 
 	}
 
-	public void startConvert(String documentPath, String pdfPath) throws ParseException, FileNotFoundException {
+	public void startConvert(String documentPath, String pdfPath, int port)
+			throws ParseException, FileNotFoundException {
 		CommandLineParser commandLineParser = new PosixParser();
 		String[] arguments = { documentPath, pdfPath };
 		CommandLine commandLine = commandLineParser.parse(OPTIONS, arguments);
 
-		int port = SocketOpenOfficeConnection.DEFAULT_PORT;
+		// int port = SocketOpenOfficeConnection.DEFAULT_PORT;
+		if (port == 0)
+			port = SocketOpenOfficeConnection.DEFAULT_PORT; // д╛хо╤к©з
 		if (commandLine.hasOption(OPTION_PORT.getOpt())) {
 			port = Integer.parseInt(commandLine.getOptionValue(OPTION_PORT.getOpt()));
 		}
@@ -137,7 +142,7 @@ public class DocumentToPDF {
 			System.exit(EXIT_CODE_CONNECTION_FAILED);
 		}
 		try {
-			DocumentConverter converter = new OpenOfficeDocumentConverter(connection, registry);
+			DocumentConverter converter = new StreamOpenOfficeDocumentConverter(connection, registry);
 			if (outputFormat == null) {
 				File inputFile = new File(fileNames[0]);
 				File outputFile = new File(fileNames[1]);
