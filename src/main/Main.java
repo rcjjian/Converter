@@ -14,8 +14,8 @@ public class Main {
 		String[] extArray = documentPath.split("\\.");
 		
 		String ext = extArray[extArray.length - 1];
-		ext = ext.toLowerCase();
-		String pdfPath = documentPath.replace(ext, "pdf");
+		ext = "." + ext.toLowerCase();
+		String pdfPath = documentPath.replace(ext, ".pdf");
 
 		String thumbDirPath =  args[1];
 
