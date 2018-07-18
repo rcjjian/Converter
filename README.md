@@ -6,8 +6,7 @@
 ### 版本说明 ###
 |版本分支|office开源库|JODConveter版本|
 |:----|:---|:---|
-|master |Libreoffice5.4.7  |JODConveter4.1|
-|V1.0 |Openoffice4.7  |JODConveter2.2|
+|V1.0 |Libreoffice5.4.7  |JODConveter4.1|
 
 ### 技术关键词 ###
 - **Java** jdk1.7及以上
