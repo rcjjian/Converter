@@ -33,5 +33,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/jpedal_lgpl.jar"/>
+	<classpathentry kind="lib" path="libs/aspose-words-18.5.0718-jdk16.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
