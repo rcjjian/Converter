@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,12 +17,14 @@ import org.apache.poi.sl.usermodel.Slide;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 
-public class PPTToPNGConverter {
+import converter.base.BaseConveter;
+
+public class PPTToPNGConverter extends BaseConveter{
 
 	private double IMAGE_RATE = 1.5; // ‘§¿¿Õº±»¿˝
 
-	public PPTToPNGConverter() {
-
+	public PPTToPNGConverter(String inputPath, String outputPath) {
+		super(inputPath, outputPath);
 	}
 	
 	private void toPNG(int pgWidth,int pgHeight,Slide slide,String pngPath) throws IOException {
@@ -78,12 +81,15 @@ public class PPTToPNGConverter {
 	 * 
 	 * @throws IOException
 	 */
-	public void startConvert(String pptPath, String thumbDirPath) throws IOException {
+	public void startConvert() throws IOException {
 
-		if (pptPath.endsWith("pptx")) {
-			this.covertPPTX(pptPath, thumbDirPath);
-		} else if (pptPath.endsWith("ppt")) {
-			this.covertPPT(pptPath, thumbDirPath);
+		File file = new File(this.outputPath);
+		if(!file.exists())file.mkdirs();
+		
+		if (this.inputPath.endsWith("pptx")) {
+			this.covertPPTX(this.inputPath, this.outputPath);
+		} else if (this.inputPath.endsWith("ppt")) {
+			this.covertPPT(this.inputPath, this.outputPath);
 		}
 	}
 

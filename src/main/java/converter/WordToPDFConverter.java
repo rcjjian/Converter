@@ -8,9 +8,12 @@ import com.aspose.words.Document;
 import com.aspose.words.License;
 import com.aspose.words.SaveFormat;
 
-public class WordToPDFConverter {
+import converter.base.BaseConveter;
 
-	public WordToPDFConverter() {
+public class WordToPDFConverter extends BaseConveter{
+
+	public WordToPDFConverter(String inputPath, String outputPath) {
+		super(inputPath,outputPath);
 	}
 
 	/***
@@ -27,13 +30,13 @@ public class WordToPDFConverter {
 		}
 	}
 
-	public void startConvert(String docPath,String pdfPath) throws Exception {
+	public void startConvert() throws Exception {
 		this.licence();
 	
-		File file = new File(pdfPath);
+		File file = new File(this.outputPath);
 		FileOutputStream os = new FileOutputStream(file);
 
-		Document doc = new Document(docPath);
+		Document doc = new Document(this.inputPath);
 		doc.save(os, SaveFormat.PDF);
 	}
 
