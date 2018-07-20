@@ -8,7 +8,7 @@
 
 ### 版本说明 ###
 |版本分支|office开源库|外部jar包|多线程|
-|:----|:---|:---|
+|:----|:---|:---|:---|
 |master | x  | poi3.17,aspose-words-18.5,jpedal_lgpl |支持|
 |v2.0 | x  | poi3.17,aspose-words-18.5,jpedal_lgpl |x|
 |V1.0 |Libreoffice5.4.7  |JODConveter4.1|x|
