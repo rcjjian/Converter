@@ -14,10 +14,10 @@
 |V1.0 |Libreoffice5.4.7  |JODConveter4.1|x|
 
 ### 更新记录 ###
-2018.07.27 增加了可中断执行转换的操作
-2018.07.20 加入socket和多线程提高并发
-2018.07.18 使用poi和apose-word作为转换文档解决方案
-2018.07.13 使用libreoffice和JODConverter作为转换文档解决方案
+- 2018.07.27 增加了可中断执行转换的操作
+- 2018.07.20 加入socket和多线程提高并发
+- 2018.07.18 使用poi和apose-word作为转换文档解决方案
+- 2018.07.13 使用libreoffice和JODConverter作为转换文档解决方案
 
 ### 技术关键词 ###
 - **Java** jdk1.7及以上
@@ -72,7 +72,3 @@ DocumentConverter为一个ServerSocket，默认端口为8100，当然在启动�
 
 ### node.js socket 对接 java serversocket例子 ###
 [https://github.com/rcjjian/document_to_thumbnail/tree/master/nodejs_connect](https://github.com/rcjjian/document_to_thumbnail/tree/master/nodejs_connect "进入查看")
-|id |辨识请求id|
-|inputPath | 输入路径 |
-|outputPath | 输出路径 |
-|action | 执行动作（play为转换，stop为停止转换或删除转换） |
