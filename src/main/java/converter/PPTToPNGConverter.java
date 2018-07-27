@@ -18,17 +18,18 @@ import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
 
 import converter.base.BaseConveter;
+import converter.exception.ConvertException;
 
-public class PPTToPNGConverter extends BaseConveter{
+public class PPTToPNGConverter extends BaseConveter {
 
-	private double IMAGE_RATE = 1.5; // Ô¤ÀÀÍ¼±ÈÀý
+	private double IMAGE_RATE = 1; // Ô¤ÀÀÍ¼±ÈÀý
 
 	public PPTToPNGConverter(String inputPath, String outputPath) {
 		super(inputPath, outputPath);
 	}
-	
-	private void toPNG(int pgWidth,int pgHeight,Slide slide,String pngPath) throws IOException {
-		
+
+	private void toPNG(int pgWidth, int pgHeight, Slide slide, String pngPath) throws IOException{
+
 		int imageWidth = (int) Math.floor(this.IMAGE_RATE * pgWidth);
 		int imageHeigth = (int) Math.floor(this.IMAGE_RATE * pgHeight);
 		
@@ -44,53 +45,97 @@ public class PPTToPNGConverter extends BaseConveter{
 		graphics.scale(this.IMAGE_RATE, this.IMAGE_RATE);
 		slide.draw(graphics);
 		// save the output
-		FileOutputStream out = new FileOutputStream(pngPath);
-		javax.imageio.ImageIO.write(img, "png", out);
-		out.close();
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(pngPath);
+			javax.imageio.ImageIO.write(img, "png", out);
+		}finally {
+			if(out != null)out.close();
+			graphics.dispose();
+			img.flush();
+			img = null;
+			graphics = null;
+			out = null;
+		}
 	}
 
-	private void covertPPT(String pptPath, String thumbDirPath) throws IOException {
+	private void covertPPT(String pptPath, String thumbDirPath) throws Exception {
 		FileInputStream is = new FileInputStream(pptPath);
 		HSLFSlideShow ppt = new HSLFSlideShow(is);
-		is.close();
 		Dimension pgsize = ppt.getPageSize();
 		int idx = 1;
-		for (HSLFSlide slide : ppt.getSlides()) {
-			this.toPNG(pgsize.width,pgsize.height,slide,thumbDirPath + "/slide" + idx + ".png");
-			idx++;
+		try {
+			for (HSLFSlide slide : ppt.getSlides()) {
+				if (!this.isConverting) {
+					System.out.println("covert ppt convert stop!");
+					throw new ConvertException();
+				}
+				this.toPNG(pgsize.width, pgsize.height, slide, thumbDirPath + "/slide" + idx + ".png");
+				idx++;
+			}
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			is.close();
+			is = null;
+			ppt.close();
+			ppt = null;
 		}
-		ppt.close();
 	}
 
-	private void covertPPTX(String pptPath, String thumbDirPath) throws IOException {
+	private void covertPPTX(String pptPath, String thumbDirPath) throws Exception {
 
 		FileInputStream is = new FileInputStream(pptPath);
-		XMLSlideShow ppt  = new XMLSlideShow(is);
-		is.close();
+		XMLSlideShow ppt = new XMLSlideShow(is);
 		Dimension pgsize = ppt.getPageSize();
 		int idx = 1;
-		for (XSLFSlide slide : ppt.getSlides()) {
-			this.toPNG(pgsize.width,pgsize.height,slide,thumbDirPath + "/slide" + idx + ".png");
-			idx++;
+		try {
+			for (XSLFSlide slide : ppt.getSlides()) {
+				if (!this.isConverting) {
+					System.out.println("covert pptx convert stop!");
+					throw new ConvertException();
+				}
+				this.toPNG(pgsize.width, pgsize.height, slide, thumbDirPath + "/slide" + idx + ".png");
+				idx++;
+			}
+		}catch(Exception e) {
+			throw e;
+		}finally {
+			is.close();
+			ppt.close();
+			is = null;
+			ppt = null;
 		}
-		ppt.close();
 	}
 
 	/***
 	 * ¿ªÊ¼×°»»
 	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	public void startConvert() throws IOException {
+	public void startConvert() throws Exception {
+		super.startConvert();
+		File dirFile = new File(this.outputPath);
+		if (!dirFile.exists())
+			dirFile.mkdirs();
 
-		File file = new File(this.outputPath);
-		if(!file.exists())file.mkdirs();
-		
 		if (this.inputPath.endsWith("pptx")) {
 			this.covertPPTX(this.inputPath, this.outputPath);
 		} else if (this.inputPath.endsWith("ppt")) {
 			this.covertPPT(this.inputPath, this.outputPath);
 		}
+		dirFile = null;
+		System.gc();
 	}
 
+	public void cancelConvert() throws Exception {
+		super.cancelConvert();
+		File dirFile = new File(this.outputPath);
+		if (dirFile.exists()) {
+			for (File file : dirFile.listFiles()) {
+				file.delete();
+			}
+			dirFile.delete();
+		}
+	}
 }

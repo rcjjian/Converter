@@ -14,6 +14,8 @@ public class WordToPNGConveter extends BaseConveter {
 		super(inputPath,outputPath);
 	}
 	
+	private WordToPDFConverter wordToPdf = null;
+	
 	/***
 	 * 先转pdf格式再转png（20180719目前版本只支持这种笨拙方式，发现有一步到位方法再迭代）
 	 */
@@ -28,11 +30,33 @@ public class WordToPNGConveter extends BaseConveter {
 		File file = new File(this.outputPath);
 		if(!file.exists())file.mkdirs();
 		
-		new WordToPDFConverter(this.inputPath, pdfPath).startConvert();
-		new PDFToPNGConverter(pdfPath, this.outputPath).startConvert();
+		wordToPdf = new WordToPDFConverter(this.inputPath, pdfPath);
+		wordToPdf.startConvert();
+		
+		PDFToPNGConverter pdfConverter = new PDFToPNGConverter(pdfPath, this.outputPath);
+		pdfConverter.startConvert();
+		
 		//移除pdf文件
-//		File pdfFile = new File(pdfPath);
-//		pdfFile.delete();
+		wordToPdf.deletePDF();
+		wordToPdf = null;
+		pdfConverter = null;
+		file = null;
+		System.gc();
+	}
+
+	public void cancelConvert() throws Exception {
+		super.cancelConvert();
+		File dirFile = new File(this.outputPath);
+		if(dirFile.exists()) {
+			for (File childFile : dirFile.listFiles()) {
+				childFile.delete();
+			}
+			dirFile.delete();
+		}
+		dirFile = null;
+		wordToPdf.deletePDF();
+		
+		System.gc();
 	}
 	
 }

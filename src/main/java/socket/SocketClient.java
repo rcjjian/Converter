@@ -5,12 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.json.JSONObject;
 
@@ -19,6 +16,8 @@ import converter.cmd.ConveterCommand;
 import converter.cmd.ResposeCode;
 import converter.controller.ConverterController;
 import task.ConverterTask;
+import task.base.BaseTask;
+import task.base.ITaskCallback;
 import task.manager.TaskManager;
 import utils.JSONUtils;
 
@@ -41,10 +40,6 @@ public class SocketClient implements Runnable {
 
 	private PrintStream out = null;
 
-	private Timer timer = null;
-
-	private final long INTERVAL = 1500; // 每隔 一段时间 检查是否有任务完成
-
 	public SocketClient(Socket socket) {
 		this.socket = socket;
 	}
@@ -65,7 +60,6 @@ public class SocketClient implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.listener();
 		try {
 			while (this.isConnect) {
 				// 接收从客户端发送过来的数据
@@ -76,14 +70,36 @@ public class SocketClient implements Runnable {
 				String action = cmd.getAction();
 				if (action.equals("play")) {
 					IConverter converter = ConverterController.getConveter(cmd.getInputPath(), cmd.getOutputPath());
-					taskMgr.addTask(new ConverterTask(converter), cmd.getId());
+					Map<String, String> externalMap = new HashMap<String, String>();
+					externalMap.put("externalId", cmd.getExternalId());
+					
+					ConverterTask converterTask = new ConverterTask(converter, new ITaskCallback() {
+						public void callback(BaseTask task) { // 执行完毕的回调
+							ConverterTask conTask = (ConverterTask)task;
+							Map<String, String> map = new HashMap<String, String>();
+							map.put("taskId", conTask.getTaskId());	
+							map.put("externalId", conTask.getExternalMap().get("externalId"));	
+							if(conTask.getStatus() == 1) { //完成任务
+								responseClient(ResposeCode.EXECUTE_SUCCESS, "convert task done", map);
+							}else if(conTask.getStatus() == -1) { //中断任务
+								responseClient(ResposeCode.EXECUTE_STOP, "convert task stop",map);
+							}
+							taskMgr.removeTask(conTask.getTaskId());
+						}
+					},externalMap);
+					
+					taskMgr.addTask(converterTask);
+					Map<String, String> map = new HashMap<String, String>();
+					map.put("taskId", converterTask.getTaskId());
+					this.responseClient(ResposeCode.OK, null, map);
 				} else if (action.equals("stop")) {
-					taskMgr.removeTask(cmd.getId());
+					taskMgr.stopTask(cmd.getTaskId());
 				}
-				this.responseClient(ResposeCode.OK, null);
 			}
 			out.close();
 			buf.close();
+		} catch (SocketException e) { // 断开链接
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.responseClient(ResposeCode.ERROR_REQUEST, e.toString());
@@ -111,30 +127,4 @@ public class SocketClient implements Runnable {
 			out.flush();
 		}
 	}
-
-	/***
-	 * 定时监听任务情况
-	 */
-	private void listener() {
-
-		if (timer == null)
-			timer = new Timer();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				Set<String> set = taskMgr.getWorkingTasks();
-				Iterator<String> iterator = set.iterator();
-				while (iterator.hasNext()) {
-					String taskId = iterator.next();
-					if (taskMgr.isDone(taskId) == 1) {
-						Map<String, String> map = new HashMap<String, String>();
-						map.put("id", taskId);
-						responseClient(ResposeCode.OK, "convert task done", map);
-						taskMgr.removeTask(taskId);
-					}
-				}
-			}
-		}, 0, INTERVAL);
-	}
-
 }

@@ -15,11 +15,15 @@ public class ResposeCode {
 
 	public static final int OK = 200;
 
+	public static final int EXECUTE_SUCCESS = 201; //√¸¡Ó÷¥––≥…π¶
+	
+	public static final int EXECUTE_STOP = 202; //Õ£÷π√¸¡Ó÷¥––
+	
 	public static final int ERROR_REQUEST = 400;
 
 	public static final int ERROR_SERVER = 500;
 
-	public JSONObject jsonObj = new JSONObject();
+	private JSONObject jsonObj;
 
 	public ResposeCode() {
 
@@ -35,25 +39,28 @@ public class ResposeCode {
 
 	public void setBody(int code, String msg, Map<String, String> map) {
 
+		this.jsonObj = new JSONObject();
 		jsonObj.put("code", code);
 
 		if (msg == null)
 			msg = "request msg";
 		
-		jsonObj.put("msg", msg);
+		this.jsonObj.put("msg", msg);
 		
 		if(map != null) {
 			Set<String> set = map.keySet();
 			Iterator<String> iterator = set.iterator();
 			while(iterator.hasNext()) {
 				String key = iterator.next();
-				jsonObj.put(key,map.get(key));
+				this.jsonObj.put(key,map.get(key));
 			}
 		}
 	}
 
 	public String toJSONString() {
-		return this.jsonObj.toString();
+		String str = this.jsonObj.toString();
+		System.out.println(str);
+		return str;
 	}
 
 }
