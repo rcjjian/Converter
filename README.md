@@ -72,3 +72,7 @@ DocumentConverter为一个ServerSocket，默认端口为8100，当然在启动�
 
 ### node.js socket 对接 java serversocket例子 ###
 [https://github.com/rcjjian/document_to_thumbnail/tree/master/nodejs_connect](https://github.com/rcjjian/document_to_thumbnail/tree/master/nodejs_connect "进入查看")
+|id |辨识请求id|
+|inputPath | 输入路径 |
+|outputPath | 输出路径 |
+|action | 执行动作（play为转换，stop为停止转换或删除转换） |
