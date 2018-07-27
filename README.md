@@ -4,7 +4,7 @@
 >**DocumentToThumbnail** 是用于doc,docx,ppt,pptx格式文档导出png格式预览图的一个Java ServerSocket应用。作为资源服务器[Resource-Server](http://gitlab.dtedu.com/ruanchangjian/resource-server/tree/master "resource-server")项目的一个插件
 
 ### 版本迭代 ###
->在对上的两个大版本，文档导出预览图都必须借助外部服务应用（libreoffice,openoffice），那么就意味着多开一个进程。为提升效率降低cpu和内存消耗，最新版本已废弃以上方式，改为使用第三方java库。更加灵活，更轻便式。在当前版本**（master分支）**加入socket和多线程后，大大提高并发效率，改掉上一版本一次转换打开一个进程的低效局面
+>在对上的两个大版本，文档导出预览图都必须借助外部服务应用（libreoffice,openoffice），那么就意味着多开一个进程。为提升效率降低cpu和内存消耗，最新版本已废弃以上方式，改为使用第三方java库。更加灵活，更轻便式。在当前版本 **（master分支）** 加入socket和多线程后，大大提高并发效率，改掉上一版本一次转换打开一个进程的低效局面
 
 ### 版本说明 ###
 |版本分支|office开源库|外部jar包|多线程|
