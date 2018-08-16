@@ -9,7 +9,6 @@ class Socket{
 	constructor(){
 		console.log('create connection');
 
-		//读取目录批量转换
 		this.convert = (dir_path)=>{
 			let format_limit = ['.ppt','.pptx','.doc','.docx'];
 			fs.readdir(dir_path,(err,files) => {
@@ -29,7 +28,7 @@ class Socket{
 		}
 
 		let main = this;
-		//链接DocumentConverter ServerSocket
+
 		const client = net.createConnection({port: 8100}, () => {
 		  // 'connect' listener
 		  console.log('connected to server!');
@@ -37,15 +36,15 @@ class Socket{
 		  console.log('test batch convert files');
 
 		  // let dir_path = 'H:\\DTPlatform\\git_project\\DocumentToThumbnail\\nodejs_connect\\test_files';
-		  let dir_path = 'H:\\DTPlatform\\github\\document_to_thumbnail\\nodejs_connect\\test_files';
+		  let dir_path = 'H:\\DTPlatform\\test_converter_resource\\resources';
 
-		  //自动发送信息转换
+
 		  //setInterval(main.convert,5000,dir_path);
 		  
 
             let req_body = {
-				inputPath : dir_path + '\\1.doc',
-				outputPath : dir_path + '\\1',
+				inputPath : dir_path + '\\6.doc',
+				outputPath : dir_path + '\\6',
 				action : 'play'
             }
             let json_str = JSON.stringify(req_body) + '\n';

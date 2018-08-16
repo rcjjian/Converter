@@ -1,5 +1,6 @@
 package converter.controller;
 
+import converter.MediaToM3u8Converter;
 import converter.PPTToPNGConverter;
 import converter.WordToPNGConveter;
 import converter.base.IConverter;
@@ -18,15 +19,21 @@ public class ConverterController {
 	public static IConverter getConveter(String inputPath,String outputPath) {
 		
 		IConverter conveter = null;
-		if(inputPath.endsWith(".ppt") || inputPath.endsWith(".pptx")) {
+		String[] extArray = inputPath.split("\\.");
+		String ext = extArray[extArray.length - 1];
+		ext = "." + ext.toLowerCase();
+		
+		if(ext.equals(".ppt") || ext.equals(".pptx")) {
 			
 			conveter = new PPTToPNGConverter(inputPath, outputPath);
 			
-		}else if(inputPath.endsWith(".doc") || inputPath.endsWith(".docx")) {
+		}else if(ext.equals(".doc") ||ext.equals(".docx")) {
 			
 			conveter = new WordToPNGConveter(inputPath, outputPath);
 			
-		}else {
+		}else if(ext.equals(".mp4") || ext.equals(".mp3")){
+		
+			conveter = new MediaToM3u8Converter(inputPath, outputPath);
 			
 		}
 		return conveter;
