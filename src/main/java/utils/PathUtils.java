@@ -25,7 +25,7 @@ public class PathUtils {
 	
 	public static String concat(String dirPath,String filename) {
 		String concatPath = "";
-		String dirPathLastStr = dirPath.substring(dirPath.length() -2);
+		String dirPathLastStr = dirPath.substring(dirPath.length() -1);
 		if(dirPathLastStr.equals("\\") || dirPathLastStr.equals("/")) {
 			concatPath = dirPath + filename;
 		}else {

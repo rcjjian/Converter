@@ -1,5 +1,6 @@
 package converter;
 
+import java.io.File;
 import java.io.InputStream;
 
 import converter.base.BaseConveter;
@@ -34,6 +35,10 @@ public class MediaToM3u8Converter extends BaseConveter {
 		
 		String m3u8_path = PathUtils.concat(this.outputPath, m3u8Name);
 
+		File output_dir = new File(this.outputPath);
+		if(!output_dir.exists())output_dir.mkdirs();
+		
+		
 		String command = "./ffmpeg.exe -i " + this.inputPath
 				+ " -c:v libx264 -acodec copy -scodec copy -f segment -segment_list_type m3u8 -segment_list " + m3u8_path
 				+ " -reset_timestamps 0 -segment_time 2 " + this.outputPath + "/out%03d.ts";
