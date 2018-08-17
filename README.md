@@ -12,9 +12,9 @@
 |版本分支|office开源库|外部jar包|多线程|
 |:----|:---|:---|:---|
 |master | x  | poi3.17,aspose-words-18.5,jpedal_lgpl |支持|
-|v3.0 | x  | poi3.17,aspose-words-18.5,jpedal_lgpl |x|
-|V2.0 |Libreoffice5.4.7  |JODConveter4.1|x|
-|V1.0 |Openoffice4.7  |JODConveter2.2|x|
+|v2.0 | x  | poi3.17,aspose-words-18.5,jpedal_lgpl |x|
+|v1.0 |Libreoffice5.4.7  |JODConveter4.1|x|
+
 
 ### 转换格式 ###
 |源格式|目标格式|
