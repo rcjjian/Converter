@@ -5,26 +5,28 @@
 
 >在上一个版本，该项目名称为DocumentToThumbnail目标是文档导出预览图，当前版本加入mp3、mp4资源切片功能，因此项目名称改为Converter
 
+>值得注意的是mp3、mp4转码基于ffmpeg，而ffmpeg.exe放在项目根目录，部署环境无需安装。
+
 ### 版本迭代 ###
 >在对上的两个大版本，文档导出预览图都必须借助外部服务应用（libreoffice,openoffice），那么就意味着多开一个进程。为提升效率降低cpu和内存消耗，最新版本已废弃以上方式，改为使用第三方java库。更加灵活，更轻便式。在当前版本**（master分支）**加入socket和多线程后，大大提高并发效率，改掉上一版本一次转换打开一个进程的低效局面
 
 ### 版本说明 ###
-|版本分支|office开源库|外部jar包|多线程|
-|:----|:---|:---|:---|
-|master | x  | poi3.17,aspose-words-18.5,jpedal_lgpl |支持|
-|v2.0 | x  | poi3.17,aspose-words-18.5,jpedal_lgpl |x|
-|v1.0 |Libreoffice5.4.7  |JODConveter4.1|x|
+|版本分支|office开源库|外部jar包|多线程|调用方式|
+|:----|:---|:---|:---|:---|
+|master | x  | poi3.17,aspose-words-18.5,jpedal_lgpl |支持|socket通讯|
+|v2.0 | x  | poi3.17,aspose-words-18.5,jpedal_lgpl |x|命令行调用|
+|v1.0 |Libreoffice5.4.7  |JODConveter4.1|x|命令行调用|
 
 
 ### 转换格式 ###
-|源格式|目标格式|
-|:----|:---|
-|doc|png|
-|docx|png|
-|ppt|png|
-|pptx|png|
-|mp3|m3u8、ts|
-|mp4|m3u8、ts|
+|源格式|目标格式|第三方支持|
+|:----|:---|:---|
+|doc|png|aspose-words-18.5,jpedal_lgpl|
+|docx|png|aspose-words-18.5,jpedal_lgpl|
+|ppt|png|poi3.17|
+|pptx|png|poi3.17|
+|mp3|m3u8、ts|ffmpeg3.4.2|
+|mp4|m3u8、ts|ffmpeg3.4.2|
 
 ### 技术关键词 ###
 - **Java** jdk1.7及以上
