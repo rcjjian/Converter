@@ -3,6 +3,7 @@ package converter;
 import java.io.File;
 
 import converter.base.BaseConveter;
+import utils.PathUtils;
 
 /***
  * wordÎÄµµµ¼³öÔ¤ÀÀÍ¼png
@@ -22,9 +23,7 @@ public class WordToPNGConveter extends BaseConveter {
 	public void startConvert() throws Exception {
 		super.startConvert();
 		
-		String[] extArray = this.inputPath.split("\\.");
-		String ext = extArray[extArray.length - 1];
-		ext = "." + ext.toLowerCase();
+		String ext = PathUtils.getExt(this.inputPath);
 		String pdfPath =  this.inputPath.replace(ext, ".pdf");
 		
 		File file = new File(this.outputPath);

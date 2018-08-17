@@ -4,6 +4,7 @@ import converter.MediaToM3u8Converter;
 import converter.PPTToPNGConverter;
 import converter.WordToPNGConveter;
 import converter.base.IConverter;
+import utils.PathUtils;
 
 /***
  * 转换控制器，用于文件格式后缀判断
@@ -19,9 +20,8 @@ public class ConverterController {
 	public static IConverter getConveter(String inputPath,String outputPath) {
 		
 		IConverter conveter = null;
-		String[] extArray = inputPath.split("\\.");
-		String ext = extArray[extArray.length - 1];
-		ext = "." + ext.toLowerCase();
+		
+		String ext = PathUtils.getExt(inputPath);
 		
 		if(ext.equals(".ppt") || ext.equals(".pptx")) {
 			

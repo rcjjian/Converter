@@ -53,9 +53,11 @@ public class WordToPDFConverter extends BaseConveter {
 			
 		} finally {
 			try {
-				doc.cleanup();
-				os.flush();
-				os.close();
+				if(doc != null)doc.cleanup();
+				if(os != null) {
+					os.flush();
+					os.close();
+				}
 				os = null;
 				doc = null;
 			} catch (IOException e) {

@@ -6,7 +6,7 @@ public class PathUtils {
 		 if (path != null && path.length() > 0) { 
 	            int dot = path.lastIndexOf('.'); 
 	            if (dot >-1 && (dot < path.length() - 1)) { 
-	                return  "." + path.substring(dot + 1); 
+	                return  "." + path.substring(dot + 1).toLowerCase(); 
 	            } 
 	        } 
 		 return "";

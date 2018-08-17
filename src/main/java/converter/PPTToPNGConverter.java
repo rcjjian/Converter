@@ -51,8 +51,8 @@ public class PPTToPNGConverter extends BaseConveter {
 			javax.imageio.ImageIO.write(img, "png", out);
 		}finally {
 			if(out != null)out.close();
-			graphics.dispose();
-			img.flush();
+			if(graphics != null)graphics.dispose();
+			if(img != null)img.flush();
 			img = null;
 			graphics = null;
 			out = null;
@@ -76,9 +76,9 @@ public class PPTToPNGConverter extends BaseConveter {
 		}catch(Exception e) {
 			throw e;
 		}finally {
-			is.close();
+			if(is != null)is.close();
 			is = null;
-			ppt.close();
+			if(ppt != null)ppt.close();
 			ppt = null;
 		}
 	}
