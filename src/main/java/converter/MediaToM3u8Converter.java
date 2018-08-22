@@ -39,9 +39,9 @@ public class MediaToM3u8Converter extends BaseConveter {
 		if(!output_dir.exists())output_dir.mkdirs();
 		
 		
-		String command = "./ffmpeg.exe -i " + this.inputPath
+		String command = "ffmpeg -i " + this.inputPath
 				+ " -c:v libx264 -acodec copy -scodec copy -f segment -segment_list_type m3u8 -segment_list " + m3u8_path
-				+ " -reset_timestamps 0 -segment_time 2 " + this.outputPath + "/out%03d.ts";
+				+ " -reset_timestamps 0 -segment_time 2 " + PathUtils.getDirPath(this.outputPath) + "/out%03d.ts";
 		
 		InputStream is = null;
 //		InputStream errorIs = null;

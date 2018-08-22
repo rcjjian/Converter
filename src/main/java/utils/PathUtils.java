@@ -23,6 +23,16 @@ public class PathUtils {
 		return "";
 	}
 	
+	public static String getDirPath(String path) {
+		if (path != null && path.length() > 0) {
+			int index = path.lastIndexOf("/");
+			if(index == path.length() - 1) {
+				return path.substring(0,  path.length() - 1);
+			}
+        }
+		return path;
+	}
+	
 	public static String concat(String dirPath,String filename) {
 		String concatPath = "";
 		String dirPathLastStr = dirPath.substring(dirPath.length() -1);
